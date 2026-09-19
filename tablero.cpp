@@ -1,5 +1,9 @@
 #include "tablero.h"
 #include "bits.h"
+#include <random>
+#include <chrono>
+
+using namespace std;
 
 int calcularIndice(int fila, int columna, int columnas){
 
@@ -33,7 +37,8 @@ void escribirFicha(unsigned char* ptr, int fila, int columna, int columnas, int 
 int bytesNecesarios(int filas, int columnas){
 
     int bits = 3 * filas * columnas;
-    return (bits + 7) / 8;
+    return (bits + 7) / 8; /*Agregamos el +7 para redondear hacia arriba y asegurarnos que si se requiere de
+                            otro byte para meter el resto de bits que tenemos, en efecto lo obtengamos.*/
 }
 
 unsigned char* crearTablero(int filas, int columnas){
@@ -93,3 +98,30 @@ unsigned char* redimensionarTablero(unsigned char* viejo, int filasViejas, int c
 
     return tableroNuevo;
 }
+
+int generarFichaAleatoria(){
+    static mt19937 generador(chrono::system_clock::now().time_since_epoch().count());
+    static uniform_int_distribution<int> distribucion(0, 5);
+    return distribucion(generador);
+}
+
+void llenarTableroAleatorio(unsigned char* ptr, int filas, int columnas){
+
+    for (int f = 0; f < filas; f++){
+
+        for(int c = 0; c < columnas; c++){
+
+            int valor = generarFichaAleatoria();
+
+            escribirFicha(ptr, f, c, columnas, valor);
+
+        }
+    }
+
+}
+
+
+
+
+
+

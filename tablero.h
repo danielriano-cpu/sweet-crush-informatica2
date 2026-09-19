@@ -17,5 +17,7 @@ void liberarTablero(unsigned char* ptr);
 
 unsigned char* redimensionarTablero(unsigned char* viejo, int filasViejas, int columnasViejas, int filasNuevas, int columnasNuevas);
 
+void llenarTableroAleatorio(unsigned char* ptr, int filas, int columnas);
+
 
 #endif // TABLERO_H
