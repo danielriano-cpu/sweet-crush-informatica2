@@ -11,5 +11,11 @@ void escribirFicha(unsigned char* ptr, int fila, int columna, int columnas, int 
 
 int bytesNecesarios(int filas, int columnas);
 
+unsigned char* crearTablero(int filas, int columnas);
+
+void liberarTablero(unsigned char* ptr);
+
+unsigned char* redimensionarTablero(unsigned char* viejo, int filasViejas, int columnasViejas, int filasNuevas, int columnasNuevas);
+
 
 #endif // TABLERO_H
