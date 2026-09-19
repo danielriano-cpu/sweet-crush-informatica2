@@ -1,0 +1,35 @@
+#include "marcador.h"
+#include "bits.h"
+#include "tablero.h"
+
+void marcarCelda(unsigned char* marcador, int indice){
+    asignar_bits(marcador, indice, 1, 1);
+}
+
+int estaMarcada(unsigned char* marcador, int indice){
+    return obtener_bits(marcador, indice, 1);
+}
+
+int bytesNecesariosMarcador(int filas, int columnas){
+    
+    int bits = 1 * filas * columnas; /* Igual a la estructura de "bytesNecesarios" en "tablero.cpp" solo que 
+                                     como cada celda ocupa 1 bit en vez de 3, multiplicamos por 1 */
+    
+    return (bits + 7) / 8; /*Agregamos el +7 para redondear hacia arriba y asegurarnos que si se requiere de
+                            otro byte para meter el resto de bits que tenemos, en efecto lo obtengamos.*/
+}
+
+unsigned char* crearMarcador(int filas, int columnas){
+    
+    int bytes = bytesNecesariosMarcador(filas, columnas);
+    
+    unsigned char* nuevo = new unsigned char [bytes];
+    
+    for (int i = 0; i < bytes; i++){
+        nuevo[i]= 0;
+    }
+    
+    return nuevo;
+}
+
+liberarTablero(unsigned char* ptr);

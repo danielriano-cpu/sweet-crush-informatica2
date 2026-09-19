@@ -7,9 +7,11 @@ SOURCES += \
         bits.cpp \
         juego.cpp \
         main.cpp \
+        marcador.cpp \
         tablero.cpp
 
 HEADERS += \
     bits.h \
     juego.h \
+    marcador.h \
     tablero.h
