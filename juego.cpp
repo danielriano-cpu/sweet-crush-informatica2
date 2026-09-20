@@ -108,3 +108,22 @@ char convertirALetra(int codigo){
         return 'A' + codigo;
     }
 }
+
+void eliminarMarcadas(unsigned char* tablero, int filas, int columnas, unsigned char* marcador){
+
+    for (int c = 0; c < columnas; c++){
+
+        for(int f = 0; f < filas;f++){
+
+            int indice = calcularIndice(f, c, columnas);
+
+            int marca = estaMarcada(marcador, indice);
+
+            if(marca == 1){
+
+                escribirFicha(tablero, f, c, columnas, 6);
+
+            }
+        }
+    }
+}
