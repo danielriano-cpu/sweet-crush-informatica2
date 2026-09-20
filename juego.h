@@ -9,4 +9,6 @@ char convertirALetra(int codigo);
 
 void eliminarMarcadas(unsigned char* tablero, int filas, int columnas, unsigned char* marcador);
 
+void aplicarGravedad(unsigned char* tablero, int filas, int columnas);
+
 #endif // JUEGO_H

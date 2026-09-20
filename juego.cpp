@@ -127,3 +127,24 @@ void eliminarMarcadas(unsigned char* tablero, int filas, int columnas, unsigned 
         }
     }
 }
+
+void aplicarGravedad(unsigned char* tablero, int filas, int columnas){
+
+    for (int c = 0; c < columnas; c++){
+
+        int filaEscritura = filas - 1;
+
+        for(int f = filas - 1; f >= 0; f--){
+
+            int ficha = leerFicha(tablero, f, c, columnas);
+
+            if (ficha != 6){
+                escribirFicha(tablero, filaEscritura, c, columnas, ficha);
+                filaEscritura--;
+            }
+
+        }
+
+        for(int f = filaEscritura; f >= 0; f--) escribirFicha(tablero, f, c, columnas, 6);
+    }
+}
