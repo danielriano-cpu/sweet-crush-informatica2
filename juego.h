@@ -5,4 +5,6 @@ void detectarHorizontal(unsigned char* tablero, int filas, int columnas, unsigne
 
 void detectarVertical(unsigned char* tablero, int filas, int columnas, unsigned char* marcador);
 
+char convertirALetra(int codigo);
+
 #endif // JUEGO_H

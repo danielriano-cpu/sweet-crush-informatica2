@@ -100,3 +100,11 @@ void detectarVertical(unsigned char* tablero, int filas, int columnas, unsigned 
     }
 
 }
+
+char convertirALetra(int codigo){
+    if(codigo == 6){
+        return 'V';
+    }else{
+        return 'A' + codigo;
+    }
+}
