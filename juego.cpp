@@ -148,3 +148,22 @@ void aplicarGravedad(unsigned char* tablero, int filas, int columnas){
         for(int f = filaEscritura; f >= 0; f--) escribirFicha(tablero, f, c, columnas, 6);
     }
 }
+
+void rellenarVacios(unsigned char* tablero, int filas, int columnas){
+
+    for (int c = 0; c < columnas; c++){
+
+        for(int f = 0; f < filas;f++){
+
+            int ficha = leerFicha(tablero, f, c, columnas);
+
+            if(ficha == 6){
+
+                int fichaNueva = generarFichaAleatoria();
+
+                escribirFicha(tablero, f, c, columnas, fichaNueva);
+
+            }
+        }
+    }
+}

@@ -17,6 +17,8 @@ void liberarTablero(unsigned char* ptr);
 
 unsigned char* redimensionarTablero(unsigned char* viejo, int filasViejas, int columnasViejas, int filasNuevas, int columnasNuevas);
 
+int generarFichaAleatoria();
+
 void llenarTableroAleatorio(unsigned char* ptr, int filas, int columnas);
 
 
