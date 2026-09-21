@@ -1,6 +1,9 @@
+#include <iostream>
+
 #include "juego.h"
 #include "tablero.h"
 #include "marcador.h"
+using namespace std;
 
 int detectarHorizontal(unsigned char* tablero, int filas, int columnas, unsigned char* marcador){
 
@@ -202,4 +205,47 @@ void iniciarTablero(unsigned char* tablero, int filas, int columnas){
     llenarTableroAleatorio(tablero, filas, columnas);
     int combinacionesIniciales = 0;
     resolverCascadas(tablero, filas, columnas, &combinacionesIniciales);
+}
+
+void imprimirFichaBinario(int valor){
+    int bit2 = (valor >> 2) & 1;
+    int bit1 = (valor >> 1) & 1;
+    int bit0 = valor & 1;
+    cout << bit2 << bit1 << bit0;
+}
+
+void mostrarEstadoJuego(unsigned char* tablero, int filas, int columnas,
+                        int eliminacionesUsuario, int fichasEliminadasTotal,
+                        int combinacionesDetectadas, int cascadasUltimaJugada,
+                        int puntuacion){
+
+    cout << "Tablero (fichas):" << endl;
+    for (int f = 0; f < filas; f++){
+        for(int c = 0; c < columnas; c++){
+            int valor = leerFicha(tablero, f, c, columnas);
+            cout << convertirALetra(valor) << " ";
+        }
+        cout << endl;
+    }
+
+    cout << endl;
+
+    cout << "Tablero (binario):" << endl;
+    for (int f = 0; f < filas; f++){
+        for(int c = 0; c < columnas; c++){
+            int valor = leerFicha(tablero, f, c, columnas);
+            imprimirFichaBinario(valor);
+            cout << " ";
+        }
+        cout << endl;
+    }
+
+    cout << endl;
+
+    cout << "Dimensiones: " << filas << "x" << columnas << endl;
+    cout << "Eliminaciones del usuario: " << eliminacionesUsuario << endl;
+    cout << "Fichas eliminadas (total): " << fichasEliminadasTotal << endl;
+    cout << "Combinaciones detectadas: " << combinacionesDetectadas << endl;
+    cout << "Cascadas de esta jugada: " << cascadasUltimaJugada << endl;
+    cout << "Puntuacion: " << puntuacion << endl;
 }

@@ -17,4 +17,11 @@ int resolverCascadas(unsigned char* tablero, int filas, int columnas, int* combi
 
 void iniciarTablero(unsigned char* tablero, int filas, int columnas);
 
+void imprimirFichaBinario(int valor);
+
+void mostrarEstadoJuego(unsigned char* tablero, int filas, int columnas,
+                        int eliminacionesUsuario, int fichasEliminadasTotal,
+                        int combinacionesDetectadas, int cascadasUltimaJugada,
+                        int puntuacion);
+
 #endif // JUEGO_H
