@@ -201,3 +201,9 @@ int resolverCascadas(unsigned char* tablero, int filas, int columnas){
 
     return cascadas;
 }
+
+void iniciarTablero(unsigned char* tablero, int filas, int columnas){
+
+    llenarTableroAleatorio(tablero, filas, columnas);
+    resolverCascadas(tablero, filas, columnas);
+}

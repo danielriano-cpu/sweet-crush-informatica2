@@ -6,49 +6,41 @@ using namespace std;
 
 int main(){
 
-    int filas = 5;
-    int columnas = 5;
+    int filas = 6;
+    int columnas = 6;
 
     unsigned char* tablero = crearTablero(filas, columnas);
 
-    // Llenamos con un patron que NO forme combinaciones por si solo
-    // (alternando 0,1,2 en diagonal para evitar rachas accidentales)
-    for (int f = 0; f < filas; f++){
-        for (int c = 0; c < columnas; c++){
-            escribirFicha(tablero, f, c, columnas, (f + c) % 3);
+    int intentos = 50;
+    bool todoBien = true;
+
+    for (int i = 0; i < intentos; i++){
+
+        iniciarTablero(tablero, filas, columnas);
+
+        unsigned char* marcador = crearMarcador(filas, columnas);
+        detectarHorizontal(tablero, filas, columnas, marcador);
+        detectarVertical(tablero, filas, columnas, marcador);
+        bool quedaAlgo = hayAlgunaMarcada(marcador, filas * columnas);
+        liberarMarcador(marcador);
+
+        if (quedaAlgo){
+            cout << "FALLO en el intento " << i << ": quedo una combinacion sin resolver" << endl;
+            todoBien = false;
         }
     }
 
-    // Forzamos una combinacion horizontal real en la fila 2: tres "4" seguidos
-    escribirFicha(tablero, 2, 0, columnas, 4);
-    escribirFicha(tablero, 2, 1, columnas, 4);
-    escribirFicha(tablero, 2, 2, columnas, 4);
-
-    cout << "Antes de resolver:" << endl;
-    for (int f = 0; f < filas; f++){
-        for (int c = 0; c < columnas; c++) cout << convertirALetra(leerFicha(tablero, f, c, columnas)) << " ";
-        cout << endl;
-    }
-
-    int cascadas = resolverCascadas(tablero, filas, columnas);
-
-    cout << "Despues de resolver (" << cascadas << " cascada(s)):" << endl;
-    for (int f = 0; f < filas; f++){
-        for (int c = 0; c < columnas; c++) cout << convertirALetra(leerFicha(tablero, f, c, columnas)) << " ";
-        cout << endl;
-    }
-
-    // Verificamos que ya no quede ninguna combinacion pendiente
-    unsigned char* marcadorFinal = crearMarcador(filas, columnas);
-    detectarHorizontal(tablero, filas, columnas, marcadorFinal);
-    detectarVertical(tablero, filas, columnas, marcadorFinal);
-    bool quedaAlgo = hayAlgunaMarcada(marcadorFinal, filas * columnas);
-    liberarMarcador(marcadorFinal);
-
-    if (cascadas >= 1 && quedaAlgo == false){
-        cout << "PRUEBA EXITOSA: se resolvio al menos una cascada y no quedan combinaciones" << endl;
+    if (todoBien){
+        cout << "PRUEBA EXITOSA: " << intentos << " tableros iniciados, ninguno quedo con combinaciones pendientes" << endl;
     } else {
-        cout << "PRUEBA FALLIDA: cascadas=" << cascadas << " quedaAlgo=" << quedaAlgo << endl;
+        cout << "PRUEBA FALLIDA: revisa los mensajes de arriba" << endl;
+    }
+
+    // Mostramos el ultimo tablero generado, solo para verlo
+    cout << "Ultimo tablero generado:" << endl;
+    for (int f = 0; f < filas; f++){
+        for (int c = 0; c < columnas; c++) cout << convertirALetra(leerFicha(tablero, f, c, columnas)) << " ";
+        cout << endl;
     }
 
     liberarTablero(tablero);
