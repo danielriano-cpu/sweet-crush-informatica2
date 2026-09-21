@@ -23,5 +23,11 @@ void llenarTableroAleatorio(unsigned char* ptr, int filas, int columnas);
 
 unsigned char* agregarFila(unsigned char* tablero, int filas, int columnas, int posicion, int* capacidadBytes);
 
+unsigned char* eliminarFila(unsigned char* tablero, int filas, int columnas, int posicion, int* capacidadBytes);
+
+unsigned char* agregarColumna(unsigned char* tablero, int filas, int columnas, int posicion, int* capacidadBytes);
+
+unsigned char* eliminarColumna(unsigned char* tablero, int filas, int columnas, int posicion, int* capacidadBytes);
+
 
 #endif // TABLERO_H

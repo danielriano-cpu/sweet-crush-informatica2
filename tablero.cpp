@@ -157,7 +157,123 @@ unsigned char* agregarFila(unsigned char* tablero, int filas, int columnas, int 
     return tableroNuevo;
 }
 
+unsigned char* eliminarFila(unsigned char* tablero, int filas, int columnas, int posicion, int* capacidadBytes){
 
+    int filasNuevas = filas - 1;
 
+    int bytesNecesariosNuevos = bytesNecesarios(filasNuevas, columnas);
+
+    unsigned char* tableroTemp = crearTablero(filasNuevas, columnas);
+
+    for (int f = 0; f < filasNuevas; f++){
+
+        for(int c = 0; c < columnas; c++){
+
+            int valor;
+
+            if(f < posicion){
+                valor = leerFicha(tablero, f, c, columnas);
+            }
+
+            if(f >= posicion){
+                valor = leerFicha(tablero, f+1, c, columnas);
+            }
+
+            escribirFicha(tableroTemp, f, c, columnas, valor);
+        }
+    }
+
+    if (bytesNecesariosNuevos < 0.65 * (*capacidadBytes)){
+        // La ocupacion cayo por debajo del 65%: si achicamos la memoria real
+        liberarTablero(tablero);
+        tablero = tableroTemp;
+        *capacidadBytes = bytesNecesariosNuevos;
+    } else {
+        // Todavia no cae del 65%: reciclamos el mismo buffer viejo (mas grande)
+        for (int i = 0; i < bytesNecesariosNuevos; i++){
+            tablero[i] = tableroTemp[i];
+        }
+        liberarTablero(tableroTemp);
+    }
+
+    return tablero;
+}
+
+unsigned char* agregarColumna(unsigned char* tablero, int filas, int columnas, int posicion, int* capacidadBytes){
+
+    int columnasNuevas = columnas + 1;
+
+    int bytesNuevos = bytesNecesarios(filas, columnasNuevas);
+
+    unsigned char* tableroNuevo = crearTablero(filas, columnasNuevas);
+
+    for (int f = 0; f < filas; f++){
+
+        for(int c = 0; c < columnasNuevas; c++){
+
+            int valor;
+
+            if(c < posicion){
+                valor = leerFicha(tablero, f, c, columnas);
+            }
+
+            if(c == posicion){
+                valor = generarFichaAleatoria();
+            }
+
+            if(c > posicion){
+                valor = leerFicha(tablero, f, c-1, columnas);
+            }
+
+            escribirFicha(tableroNuevo, f, c, columnasNuevas, valor);
+        }
+    }
+
+    liberarTablero(tablero);
+
+    *capacidadBytes = bytesNuevos;
+
+    return tableroNuevo;
+}
+
+unsigned char* eliminarColumna(unsigned char* tablero, int filas, int columnas, int posicion, int* capacidadBytes){
+
+    int columnasNuevas = columnas - 1;
+
+    int bytesNecesariosNuevos = bytesNecesarios(filas, columnasNuevas);
+
+    unsigned char* tableroTemp = crearTablero(filas, columnasNuevas);
+
+    for (int f = 0; f < filas; f++){
+
+        for(int c = 0; c < columnasNuevas; c++){
+
+            int valor;
+
+            if(c < posicion){
+                valor = leerFicha(tablero, f, c, columnas);
+            }
+
+            if(c >= posicion){
+                valor = leerFicha(tablero, f, c+1, columnas);
+            }
+
+            escribirFicha(tableroTemp, f, c, columnasNuevas, valor);
+        }
+    }
+
+    if (bytesNecesariosNuevos < 0.65 * (*capacidadBytes)){
+        liberarTablero(tablero);
+        tablero = tableroTemp;
+        *capacidadBytes = bytesNecesariosNuevos;
+    } else {
+        for (int i = 0; i < bytesNecesariosNuevos; i++){
+            tablero[i] = tableroTemp[i];
+        }
+        liberarTablero(tableroTemp);
+    }
+
+    return tablero;
+}
 
 
