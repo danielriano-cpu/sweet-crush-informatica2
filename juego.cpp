@@ -2,8 +2,9 @@
 #include "tablero.h"
 #include "marcador.h"
 
-void detectarHorizontal(unsigned char* tablero, int filas, int columnas, unsigned char* marcador){
+int detectarHorizontal(unsigned char* tablero, int filas, int columnas, unsigned char* marcador){
 
+    int contador = 0;
     for (int f = 0; f < filas;f++){
 
         int racha = 1;
@@ -31,6 +32,8 @@ void detectarHorizontal(unsigned char* tablero, int filas, int columnas, unsigne
             }
 
             if (racha == 3){
+
+                contador++;
                 int indiceAnterior1 = calcularIndice(f, c-1, columnas);
                 int indiceAnterior2 = calcularIndice(f, c-2, columnas);
                 marcarCelda(marcador, indiceAnterior1);
@@ -44,16 +47,16 @@ void detectarHorizontal(unsigned char* tablero, int filas, int columnas, unsigne
 
             }
 
-
         }
 
     }
 
-
+    return contador;
 }
 
-void detectarVertical(unsigned char* tablero, int filas, int columnas, unsigned char* marcador){
+int detectarVertical(unsigned char* tablero, int filas, int columnas, unsigned char* marcador){
 
+    int contador = 0;
     for (int c = 0; c < columnas; c++){
 
         int racha = 1;
@@ -81,6 +84,8 @@ void detectarVertical(unsigned char* tablero, int filas, int columnas, unsigned 
             }
 
             if (racha == 3){
+
+                contador++;
                 int indiceAnterior1 = calcularIndice(f-1, c, columnas);
                 int indiceAnterior2 = calcularIndice(f-2, c, columnas);
                 marcarCelda(marcador, indiceAnterior1);
@@ -94,11 +99,11 @@ void detectarVertical(unsigned char* tablero, int filas, int columnas, unsigned 
 
             }
 
-
         }
 
     }
 
+    return contador;
 }
 
 char convertirALetra(int codigo){
@@ -168,7 +173,7 @@ void rellenarVacios(unsigned char* tablero, int filas, int columnas){
     }
 }
 
-int resolverCascadas(unsigned char* tablero, int filas, int columnas){
+int resolverCascadas(unsigned char* tablero, int filas, int columnas, int* combinacionesDetectadas){
 
     int cascadas = 0;
 
@@ -176,34 +181,25 @@ int resolverCascadas(unsigned char* tablero, int filas, int columnas){
 
         unsigned char* marcadorNuevo = crearMarcador(filas, columnas);
 
-        detectarHorizontal(tablero, filas, columnas, marcadorNuevo);
-
-        detectarVertical(tablero, filas, columnas, marcadorNuevo);
+        int comboH = detectarHorizontal(tablero, filas, columnas, marcadorNuevo);
+        int comboV = detectarVertical(tablero, filas, columnas, marcadorNuevo);
+        *combinacionesDetectadas = *combinacionesDetectadas + comboH + comboV;
 
         if (hayAlgunaMarcada(marcadorNuevo, filas*columnas)){
-
             eliminarMarcadas(tablero, filas, columnas, marcadorNuevo);
             aplicarGravedad(tablero, filas, columnas);
             rellenarVacios(tablero, filas, columnas);
-
             cascadas++;
-
             liberarMarcador(marcadorNuevo);
-
-
         }else{
-
             liberarMarcador(marcadorNuevo); break;
-
         }
-
     }
-
     return cascadas;
 }
 
 void iniciarTablero(unsigned char* tablero, int filas, int columnas){
-
     llenarTableroAleatorio(tablero, filas, columnas);
-    resolverCascadas(tablero, filas, columnas);
+    int combinacionesIniciales = 0;
+    resolverCascadas(tablero, filas, columnas, &combinacionesIniciales);
 }

@@ -1,9 +1,9 @@
 #ifndef JUEGO_H
 #define JUEGO_H
 
-void detectarHorizontal(unsigned char* tablero, int filas, int columnas, unsigned char* marcador);
+int detectarHorizontal(unsigned char* tablero, int filas, int columnas, unsigned char* marcador);
 
-void detectarVertical(unsigned char* tablero, int filas, int columnas, unsigned char* marcador);
+int detectarVertical(unsigned char* tablero, int filas, int columnas, unsigned char* marcador);
 
 char convertirALetra(int codigo);
 
@@ -13,7 +13,7 @@ void aplicarGravedad(unsigned char* tablero, int filas, int columnas);
 
 void rellenarVacios(unsigned char* tablero, int filas, int columnas);
 
-int resolverCascadas(unsigned char* tablero, int filas, int columnas);
+int resolverCascadas(unsigned char* tablero, int filas, int columnas, int* combinacionesDetectadas);
 
 void iniciarTablero(unsigned char* tablero, int filas, int columnas);
 
