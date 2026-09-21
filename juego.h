@@ -24,4 +24,6 @@ void mostrarEstadoJuego(unsigned char* tablero, int filas, int columnas,
                         int combinacionesDetectadas, int cascadasUltimaJugada,
                         int puntuacion);
 
+int eliminarFichaJugador(unsigned char* tablero, int filas, int columnas, int fila, int columna, int* combinacionesDetectadas);
+
 #endif // JUEGO_H

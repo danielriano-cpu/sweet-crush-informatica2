@@ -219,19 +219,42 @@ void mostrarEstadoJuego(unsigned char* tablero, int filas, int columnas,
                         int combinacionesDetectadas, int cascadasUltimaJugada,
                         int puntuacion){
 
+    cout << "--------------" << endl;
     cout << "Tablero (fichas):" << endl;
+    cout << "  ";
+    for(int c = 0; c < columnas; c++){
+        cout << c << " ";
+    }
+    cout << endl;
+    cout << "  ";
+    for(int c = 0; c < columnas; c++){
+        cout << "--";
+    }
+    cout << endl;
     for (int f = 0; f < filas; f++){
+        cout << f << "|";
         for(int c = 0; c < columnas; c++){
             int valor = leerFicha(tablero, f, c, columnas);
             cout << convertirALetra(valor) << " ";
         }
         cout << endl;
     }
-
     cout << endl;
 
+    cout << "--------------" << endl;
     cout << "Tablero (binario):" << endl;
+    cout << "  ";
+    for(int c = 0; c < columnas; c++){
+        cout << c << "   ";
+    }
+    cout << endl;
+    cout << "  ";
+    for(int c = 0; c < columnas; c++){
+        cout << "----";
+    }
+    cout << endl;
     for (int f = 0; f < filas; f++){
+        cout << f << "|";
         for(int c = 0; c < columnas; c++){
             int valor = leerFicha(tablero, f, c, columnas);
             imprimirFichaBinario(valor);
@@ -239,13 +262,30 @@ void mostrarEstadoJuego(unsigned char* tablero, int filas, int columnas,
         }
         cout << endl;
     }
-
     cout << endl;
 
+    cout << "--------------" << endl;
     cout << "Dimensiones: " << filas << "x" << columnas << endl;
     cout << "Eliminaciones del usuario: " << eliminacionesUsuario << endl;
     cout << "Fichas eliminadas (total): " << fichasEliminadasTotal << endl;
     cout << "Combinaciones detectadas: " << combinacionesDetectadas << endl;
     cout << "Cascadas de esta jugada: " << cascadasUltimaJugada << endl;
     cout << "Puntuacion: " << puntuacion << endl;
+    cout << "--------------" << endl;
+}
+
+int eliminarFichaJugador(unsigned char* tablero, int filas, int columnas, int fila, int columna, int* combinacionesDetectadas){
+
+    if(fila < 0 || fila >= filas || columna < 0 || columna >= columnas){
+        return -1;
+    }
+
+    escribirFicha(tablero, fila, columna, columnas, 6);
+
+    aplicarGravedad(tablero, filas, columnas);
+    rellenarVacios(tablero, filas, columnas);
+
+    int cascadas = resolverCascadas(tablero, filas, columnas, combinacionesDetectadas);
+
+    return cascadas;
 }
