@@ -21,5 +21,7 @@ int generarFichaAleatoria();
 
 void llenarTableroAleatorio(unsigned char* ptr, int filas, int columnas);
 
+unsigned char* agregarFila(unsigned char* tablero, int filas, int columnas, int posicion, int* capacidadBytes);
+
 
 #endif // TABLERO_H

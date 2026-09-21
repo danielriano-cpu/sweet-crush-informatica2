@@ -120,6 +120,42 @@ void llenarTableroAleatorio(unsigned char* ptr, int filas, int columnas){
 
 }
 
+unsigned char* agregarFila(unsigned char* tablero, int filas, int columnas, int posicion, int* capacidadBytes){
+
+    int filasNuevas = filas + 1;
+
+    int bytesNuevos = bytesNecesarios(filasNuevas, columnas);
+
+    unsigned char* tableroNuevo = crearTablero(filasNuevas, columnas);
+
+    for (int f = 0; f < filasNuevas; f++){
+
+        for(int c = 0; c < columnas; c++){
+
+            int valor;
+
+            if(f < posicion){
+                valor = leerFicha(tablero, f, c, columnas);
+            }
+
+            if(f == posicion){
+                valor = generarFichaAleatoria();
+            }
+
+            if(f > posicion){
+                valor = leerFicha(tablero, f-1, c, columnas);
+            }
+
+            escribirFicha(tableroNuevo, f, c, columnas, valor);
+        }
+    }
+
+    liberarTablero(tablero);
+
+    *capacidadBytes = bytesNuevos;
+
+    return tableroNuevo;
+}
 
 
 
