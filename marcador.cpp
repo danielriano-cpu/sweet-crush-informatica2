@@ -30,3 +30,26 @@ unsigned char* crearMarcador(int filas, int columnas){
 
     return nuevo;
 }
+
+void liberarMarcador(unsigned char* ptr){
+
+    delete[]ptr;
+}
+
+bool hayAlgunaMarcada(unsigned char* marcador, int totalCeldas){
+
+    for(int i = 0; i < totalCeldas;i++){
+
+        int marca = estaMarcada(marcador, i);
+
+        if(marca == 1){
+
+            return true;
+
+        }
+
+    }
+
+    return false;
+
+}

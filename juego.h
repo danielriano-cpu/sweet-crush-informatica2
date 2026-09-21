@@ -13,4 +13,6 @@ void aplicarGravedad(unsigned char* tablero, int filas, int columnas);
 
 void rellenarVacios(unsigned char* tablero, int filas, int columnas);
 
+int resolverCascadas(unsigned char* tablero, int filas, int columnas);
+
 #endif // JUEGO_H

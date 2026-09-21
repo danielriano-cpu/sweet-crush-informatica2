@@ -167,3 +167,37 @@ void rellenarVacios(unsigned char* tablero, int filas, int columnas){
         }
     }
 }
+
+int resolverCascadas(unsigned char* tablero, int filas, int columnas){
+
+    int cascadas = 0;
+
+    while (true){
+
+        unsigned char* marcadorNuevo = crearMarcador(filas, columnas);
+
+        detectarHorizontal(tablero, filas, columnas, marcadorNuevo);
+
+        detectarVertical(tablero, filas, columnas, marcadorNuevo);
+
+        if (hayAlgunaMarcada(marcadorNuevo, filas*columnas)){
+
+            eliminarMarcadas(tablero, filas, columnas, marcadorNuevo);
+            aplicarGravedad(tablero, filas, columnas);
+            rellenarVacios(tablero, filas, columnas);
+
+            cascadas++;
+
+            liberarMarcador(marcadorNuevo);
+
+
+        }else{
+
+            liberarMarcador(marcadorNuevo); break;
+
+        }
+
+    }
+
+    return cascadas;
+}

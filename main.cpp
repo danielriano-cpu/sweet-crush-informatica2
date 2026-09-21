@@ -1,67 +1,54 @@
 #include <iostream>
 #include "tablero.h"
 #include "juego.h"
+#include "marcador.h"
 using namespace std;
 
 int main(){
 
-    int filas = 3;
-    int columnas = 3;
+    int filas = 5;
+    int columnas = 5;
 
     unsigned char* tablero = crearTablero(filas, columnas);
 
-    // Board con mezcla de fichas reales y vacíos
-    escribirFicha(tablero, 0, 0, columnas, 2);
-    escribirFicha(tablero, 0, 1, columnas, 6);
-    escribirFicha(tablero, 0, 2, columnas, 4);
-    escribirFicha(tablero, 1, 0, columnas, 6);
-    escribirFicha(tablero, 1, 1, columnas, 1);
-    escribirFicha(tablero, 1, 2, columnas, 6);
-    escribirFicha(tablero, 2, 0, columnas, 3);
-    escribirFicha(tablero, 2, 1, columnas, 6);
-    escribirFicha(tablero, 2, 2, columnas, 0);
-
-    // Guardamos el estado "antes" para poder comparar después
-    int antes[3][3];
-    cout << "Antes de rellenar:" << endl;
+    // Llenamos con un patron que NO forme combinaciones por si solo
+    // (alternando 0,1,2 en diagonal para evitar rachas accidentales)
     for (int f = 0; f < filas; f++){
         for (int c = 0; c < columnas; c++){
-            antes[f][c] = leerFicha(tablero, f, c, columnas);
-            cout << antes[f][c] << " ";
+            escribirFicha(tablero, f, c, columnas, (f + c) % 3);
         }
+    }
+
+    // Forzamos una combinacion horizontal real en la fila 2: tres "4" seguidos
+    escribirFicha(tablero, 2, 0, columnas, 4);
+    escribirFicha(tablero, 2, 1, columnas, 4);
+    escribirFicha(tablero, 2, 2, columnas, 4);
+
+    cout << "Antes de resolver:" << endl;
+    for (int f = 0; f < filas; f++){
+        for (int c = 0; c < columnas; c++) cout << convertirALetra(leerFicha(tablero, f, c, columnas)) << " ";
         cout << endl;
     }
 
-    rellenarVacios(tablero, filas, columnas);
+    int cascadas = resolverCascadas(tablero, filas, columnas);
 
-    cout << "Despues de rellenar:" << endl;
-    bool todoBien = true;
+    cout << "Despues de resolver (" << cascadas << " cascada(s)):" << endl;
     for (int f = 0; f < filas; f++){
-        for (int c = 0; c < columnas; c++){
-            int actual = leerFicha(tablero, f, c, columnas);
-            cout << actual << " ";
-
-            if (antes[f][c] == 6){
-                // era vacío: debe haber cambiado a un valor entre 0 y 5
-                if (actual < 0 || actual > 5){
-                    cout << "[FALLO en (" << f << "," << c << ") sigue vacío o fuera de rango] ";
-                    todoBien = false;
-                }
-            } else {
-                // no era vacío: no debió cambiar
-                if (actual != antes[f][c]){
-                    cout << "[FALLO en (" << f << "," << c << ") una ficha real fue modificada] ";
-                    todoBien = false;
-                }
-            }
-        }
+        for (int c = 0; c < columnas; c++) cout << convertirALetra(leerFicha(tablero, f, c, columnas)) << " ";
         cout << endl;
     }
 
-    if (todoBien){
-        cout << "PRUEBA EXITOSA: todos los vacios se rellenaron y las fichas reales no se tocaron" << endl;
+    // Verificamos que ya no quede ninguna combinacion pendiente
+    unsigned char* marcadorFinal = crearMarcador(filas, columnas);
+    detectarHorizontal(tablero, filas, columnas, marcadorFinal);
+    detectarVertical(tablero, filas, columnas, marcadorFinal);
+    bool quedaAlgo = hayAlgunaMarcada(marcadorFinal, filas * columnas);
+    liberarMarcador(marcadorFinal);
+
+    if (cascadas >= 1 && quedaAlgo == false){
+        cout << "PRUEBA EXITOSA: se resolvio al menos una cascada y no quedan combinaciones" << endl;
     } else {
-        cout << "PRUEBA FALLIDA: revisa los mensajes de arriba" << endl;
+        cout << "PRUEBA FALLIDA: cascadas=" << cascadas << " quedaAlgo=" << quedaAlgo << endl;
     }
 
     liberarTablero(tablero);
